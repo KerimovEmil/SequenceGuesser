@@ -41,6 +41,9 @@ class GeneralFibonacciSequence(SequenceType):
         return out
 
     def seq_str(self, n):
-        f = sympy.Function('f')
-        expression = self.a * f(n - 2) + self.b * f(n-1)
+        # f = sympy.Function('f')
+        f_n2 = (((1 + sympy.sqrt(5))/2)**(n-2) + ((1 - sympy.sqrt(5))/2)**(n-2)) / sympy.sqrt(5)
+        f_n1 = (((1 + sympy.sqrt(5))/2)**(n-1) + ((1 - sympy.sqrt(5))/2)**(n-1)) / sympy.sqrt(5)
+        expression = self.a * f_n2 + self.b * f_n1
+
         return expression
