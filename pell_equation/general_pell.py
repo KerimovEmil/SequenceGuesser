@@ -6,7 +6,7 @@ def is_int(n): return abs(n - int(n)) < 1e-13
 
 
 class PellEquation:
-    """Class to solve Pell Equation x^2 - d * y^2 = 1"""
+    """Class to solve Pell Equation x^2 - d*y^2 = 1"""
     def __init__(self, d):
         self.d = d
         self.u = None
@@ -50,7 +50,7 @@ class PellEquation:
         Returns: (x,y) such that (x + y*sqrt(5)) = x * u
         """
         a, b = x
-        u1, u2 = self.u
+        u1, u2 = self.solve_pell()
 
         f = u1 * a + u2 * self.d * b
         s = u2 * a + u1 * b
@@ -58,7 +58,7 @@ class PellEquation:
 
 
 class GeneralPell(PellEquation):
-    """Class to solve Pell Equation x^2 - sqrt(D) * y^2 = n"""
+    """Class to solve Pell Equation x^2 - d*y^2 = n"""
     def __init__(self, d, n):
         super(GeneralPell, self).__init__(d)
         self.n = n
