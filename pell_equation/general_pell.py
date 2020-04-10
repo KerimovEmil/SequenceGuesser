@@ -37,6 +37,10 @@ class PellEquation:
             self.u = self.generate_fundamental_solution(d=self.d)
         return self.u
 
+    def get_u_float(self):
+        u1, u2 = self.solve_pell()
+        return u1 + u2 * self.d**0.5
+
     def multiply_by_u_solution(self, x):
         """
         Multiply x with u, interpreting as numbers from the field sqrt(d). Where u is a fundamental solution.
@@ -58,24 +62,26 @@ class GeneralPell(PellEquation):
     def __init__(self, d, n):
         super(GeneralPell, self).__init__(d)
         self.n = n
+        self.solve_pell()
 
-    def generate_primitive_solution(self, u_tup, n, d=5, positive_only=False):
+    def generate_primitive_solution(self, positive_only=False):
         """
         Get all possibly unique primitive generators of x^2 - d*y^2 = n
         Args:
-            u_tup: <tuple> (a,b) fundamental solution to a^2 - b*y^2 = 1
-            n: <int>
-            d: <int>
             positive_only: <bool> specify if positive only solutions should be kept
 
         Returns: list of tuples (x,y) of the form (x + y*sqrt(d))
         """
-        u = u_tup[0] + u_tup[1] * d**0.5
         # need to check |y| <= sqrt(n*u/d)
+        u, n, d = self.get_u_float(), self.n, self.d
         abs_y_threshold = int((abs(n)*u/d)**0.5)  # 12
+        if n > 0:
+            abs_y_min = 0
+        else:
+            abs_y_min = int((-n/d)**0.5) + 1  # x^2 > 0 => y > sqrt(-n/d)
 
         ls_tup = []
-        for y in range(abs_y_threshold + 1):
+        for y in range(abs_y_min, abs_y_threshold + 1):
             x2 = n + d * y * y
             if is_int(x2 ** 0.5):
                 x = int(x2 ** 0.5)
@@ -116,6 +122,8 @@ class GeneralPell(PellEquation):
             return '{}'.format(tup[0])
         if tup[1] == 1:
             return '({} + sqrt({}))'.format(tup[0], d)
+        if tup[1] < 0:
+            return '({} - {}*sqrt({}))'.format(tup[0], abs(tup[1]), d)
         return '({} + {}*sqrt({}))'.format(tup[0], tup[1], d)
 
     def format_full_solution(self, ls_tup):
@@ -123,8 +131,7 @@ class GeneralPell(PellEquation):
         return {self.format_one_solution(tup, self.d) + u_str for tup in ls_tup}
 
     def solve_general_pell(self, positive_only=False):
-        u_tup = self.solve_pell()
-        ls_unique = self.generate_primitive_solution(u_tup=u_tup, n=self.n, d=self.d, positive_only=positive_only)
+        ls_unique = self.generate_primitive_solution(positive_only=positive_only)
         return self.format_full_solution(ls_unique)
 
 
@@ -134,13 +141,22 @@ class TestPell(unittest.TestCase):
 
     def test_general_pell_equation(self):
         print(GeneralPell(d=6, n=3).solve_general_pell(positive_only=True))
+        print(GeneralPell(d=6, n=-3).solve_general_pell(positive_only=True))
 
         self.assertEqual(len(GeneralPell(d=6, n=3).solve_general_pell(positive_only=True)), 1)
         self.assertEqual(len(GeneralPell(d=6, n=3).solve_general_pell()), 2)
 
+        print(GeneralPell(d=19, n=36).solve_general_pell(positive_only=True))
+        print(GeneralPell(d=19, n=36).solve_general_pell(positive_only=False))
+
     def test_no_general_pell_equation(self):
         """x^2 - 37*y^2 = 11 has no solution"""
         self.assertEqual(len(GeneralPell(d=37, n=11).solve_general_pell()), 0)
+
+    def test_neg_general_pell_equation(self):
+        """x^2 - 5*y^2 = -1"""
+        self.assertEqual(len(GeneralPell(d=5, n=-1).solve_general_pell(positive_only=True)), 1)
+        self.assertEqual(len(GeneralPell(d=5, n=-1).solve_general_pell(positive_only=False)), 3)
 
     def test_all_pell_equation(self):
         for d in range(2, 10):
@@ -148,6 +164,5 @@ class TestPell(unittest.TestCase):
                 continue
             with self.subTest('D = {}'.format(d)):
                 x, y = PellEquation(d=d).solve_pell()
-                print(f'd={d}, x={x}, y={y}')
+                # print(f'd={d}, x={x}, y={y}')
                 self.assertEqual(pow(x, 2) - d * pow(y, 2), 1)
-
