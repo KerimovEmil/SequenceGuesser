@@ -18,6 +18,9 @@ class FieldExtensionD:
     def conjugate(self):
         return FieldExtensionD(x=self.x, y=-self.y, d=self.d)
 
+    def norm(self):
+        return self*self.conjugate()
+
     def __mul__(self, other):
         assert self.d == other.d
         f = self.x * other.x + self.y * self.d * other.y
@@ -154,7 +157,7 @@ class GeneralPell(PellEquation):
         Get all possibly unique primitive generators of x^2 - d*y^2 = n
         Args:
             positive_only: <bool> specify if positive only solutions should be kept
-        Returns: list of tuples (x,y) of the form (x + y*sqrt(d))
+        Returns: set of FieldExtensionD values of the form (x + y*sqrt(d))
         """
         # need to check |y| <= sqrt(n*u/d)
         u = self.base_solution.u_float
@@ -171,7 +174,7 @@ class GeneralPell(PellEquation):
             x2 = n + d * y * y
             x = int(x2 ** 0.5)
             candidate_solution = FieldExtensionD(x, y, d)
-            if candidate_solution * candidate_solution.conjugate() == n:
+            if candidate_solution.norm() == n:
                 if positive_only:
                     # only keep the positive values of x + y*sqrt(d)
                     ls_tup.add(FieldExtensionD(x, y, d))
@@ -180,18 +183,16 @@ class GeneralPell(PellEquation):
                         ls_tup.add(FieldExtensionD(-x, y, d))
                     else:
                         ls_tup.add(FieldExtensionD(x, -y, d))
-                    # ls_tup.append((-x, -y))  # will always be negative
+                    # FieldExtensionD(-x, -y)  # will always be negative
                 else:
                     ls_tup.add(FieldExtensionD(x, y, d))
                     ls_tup.add(FieldExtensionD(-x, y, d))
                     ls_tup.add(FieldExtensionD(x, -y, d))
                     ls_tup.add(FieldExtensionD(-x, -y, d))
 
-                # [(7, 1), (7, -1), (8, 2), (8, -2), (13, -5), (13, 5), (17, -7), (17, 7)]
         return FieldExtensionD.remove_duplicates(self.base_solution, ls_tup)
 
 
-# TODO fix up unittest
 class TestPell(unittest.TestCase):
     def test_pell_equation(self):
         sol = PellEquation(d=5).solve()
