@@ -36,7 +36,7 @@ class CatalanNumberSequence(SequenceType):
 
     def term_number(self, index):
         """ The ith number in the sequence """
-        n = self.n + index
+        n = self.n + index - 1
 
         return CatalanNumberSequence.nth_catalan_number(n)
 

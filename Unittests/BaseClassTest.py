@@ -34,10 +34,10 @@ class SequenceGuesser(unittest.TestCase):
         self.assertEqual(o_seq.get_type(), 'CatalanNumberSequence')
 
         out_next = o_seq.get_next_number()
-        self.assertRegex(out_next, '16796') 
+        self.assertRegex(out_next, '4862')
 
-        ith_number = o_seq.get_ith_number(12)  # index 12
-        self.assertRegex(ith_number, '9694845')
+        ith_number = o_seq.get_ith_number(12)
+        self.assertRegex(ith_number, '2674440')
 
     def test_general_fib(self):
         user_input = [1, 2, 3, 5, 8, 13]
