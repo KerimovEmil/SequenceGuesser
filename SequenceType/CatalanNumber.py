@@ -8,7 +8,7 @@ class CatalanNumberSequence(SequenceType):
 
     def __init__(self, seq):
         super(CatalanNumberSequence, self).__init__(seq)
-        self.n = 0  # nth catalan number
+        self.n = 0  # nth catalan number.  Number in the 0,1,2,3,etc catalan sequence
 
     def __bool__(self):
         """ Check whether sequence is Catalan Numbers """
@@ -16,7 +16,7 @@ class CatalanNumberSequence(SequenceType):
         if self.seq.size <= 2:
             return False
 
-        # solve for the term position of the first number
+        # solve for the catalan term position of the first number
         # arbitrarily start with initial guess of 5
         # todo think about this because it won't work with much larger numbers
         self.n = round(fsolve(lambda x: (comb(2 * x, x) * 1 / (x + 1)) - self.seq.ls[0], 5)[0])
@@ -32,6 +32,7 @@ class CatalanNumberSequence(SequenceType):
 
     @staticmethod
     def nth_catalan_number(n):
+        """ Get the nth term catalan number """
         return comb(2 * n, n) * 1 / (n + 1)
 
     def term_number(self, index):
@@ -41,7 +42,6 @@ class CatalanNumberSequence(SequenceType):
         return CatalanNumberSequence.nth_catalan_number(n)
 
     def seq_str(self, n):
-        # n is 1 + the list index
         n_repr = self.n - 1
         expression = factorial(2 * (n + n_repr)) / (factorial(n + n_repr + 1) * factorial(n + n_repr))
         return expression
