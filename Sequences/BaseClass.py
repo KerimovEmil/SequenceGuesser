@@ -2,13 +2,14 @@ from SequenceType.Geometric import GeometricSequence
 from SequenceType.GeneralFib import GeneralFibonacciSequence
 from SequenceType.Polynomial import PolynomialSequence
 from SequenceType.Harmonic import HarmonicSequence
+from SequenceType.CatalanNumber import CatalanNumberSequence
 import sympy
 from common.util import represent_int
 
 __author__ = 'Emil Kerimov'
 
 # TODO: Add more possible classes
-ALL_TYPES = [GeometricSequence, GeneralFibonacciSequence, PolynomialSequence, HarmonicSequence]
+ALL_TYPES = [GeometricSequence, GeneralFibonacciSequence, PolynomialSequence, HarmonicSequence, CatalanNumberSequence]
 
 
 class Sequence:
