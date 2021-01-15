@@ -15,6 +15,30 @@ class SequenceGuesser(unittest.TestCase):
         ith_number = o_seq.get_ith_number(8)
         self.assertRegex(ith_number, '128')
 
+    def test_harmonic_progression(self):
+        user_input = [1 / 16, 1 / 13, 1 / 10, 1 / 7]
+        o_seq = Sequence(user_input)
+
+        self.assertEqual(o_seq.get_type(), 'HarmonicSequence')
+
+        out_next = o_seq.get_next_number()
+        self.assertRegex(out_next, '0.25')
+
+        ith_number = o_seq.get_ith_number(8)
+        self.assertRegex(ith_number, '-0.2')
+
+    def test_catalan(self):
+        user_input = [5, 14, 42, 132, 429, 1430]
+        o_seq = Sequence(user_input)
+
+        self.assertEqual(o_seq.get_type(), 'CatalanNumberSequence')
+
+        out_next = o_seq.get_next_number()
+        self.assertRegex(out_next, '4862')
+
+        ith_number = o_seq.get_ith_number(12)
+        self.assertRegex(ith_number, '2674440')
+
     def test_general_fib(self):
         user_input = [1, 2, 3, 5, 8, 13]
         o_seq = Sequence(user_input)

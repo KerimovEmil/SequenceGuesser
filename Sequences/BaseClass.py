@@ -1,14 +1,15 @@
 from SequenceType.Geometric import GeometricSequence
 from SequenceType.GeneralFib import GeneralFibonacciSequence
 from SequenceType.Polynomial import PolynomialSequence
+from SequenceType.Harmonic import HarmonicSequence
+from SequenceType.CatalanNumber import CatalanNumberSequence
 import sympy
 from common.util import represent_int
 
 __author__ = 'Emil Kerimov'
 
-
 # TODO: Add more possible classes
-ALL_TYPES = [GeometricSequence, GeneralFibonacciSequence, PolynomialSequence]
+ALL_TYPES = [GeometricSequence, GeneralFibonacciSequence, PolynomialSequence, HarmonicSequence, CatalanNumberSequence]
 
 
 class Sequence:
@@ -45,7 +46,7 @@ class Sequence:
         if i < 1:
             raise NotImplementedError("Negative place holders are not defined yet")
         if i <= self.size:
-            val = self.ls[i-1]
+            val = self.ls[i - 1]
         if self.type_obj is None:
             _ = self.get_type()
         if val is None:
@@ -72,4 +73,3 @@ class Sequence:
         # if self.type_obj is None:
         #     _ = self.get_type()
         # return self.type_obj.sum_str()
-
