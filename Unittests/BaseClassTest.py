@@ -39,6 +39,18 @@ class SequenceGuesser(unittest.TestCase):
         ith_number = o_seq.get_ith_number(12)
         self.assertRegex(ith_number, '2674440')
 
+    def test_square(self):
+        user_input = [16, 25, 36, 49, 64]
+        o_seq = Sequence(user_input)
+
+        self.assertEqual(o_seq.get_type(), 'SquareNumberSequence')
+
+        out_next = o_seq.get_next_number()
+        self.assertRegex(out_next, '81')
+
+        ith_number = o_seq.get_ith_number(12)
+        self.assertRegex(ith_number, '225')
+
     def test_general_fib(self):
         user_input = [1, 2, 3, 5, 8, 13]
         o_seq = Sequence(user_input)
