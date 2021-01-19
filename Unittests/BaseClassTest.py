@@ -87,6 +87,18 @@ class SequenceGuesser(unittest.TestCase):
         ith_number = o_seq.get_ith_number(8)
         self.assertRegex(ith_number, '231')
 
+    def test_central_polygonal(self):
+        user_input = [29, 37, 46, 56]
+        o_seq = Sequence(user_input)
+
+        self.assertEqual(o_seq.get_type(), 'CentralPolygonalSequence')
+
+        out_next = o_seq.get_next_number()
+        self.assertRegex(out_next, '67')
+
+        ith_number = o_seq.get_ith_number(9)
+        self.assertRegex(ith_number, '121')
+
     def test_general_fib(self):
         user_input = [1, 2, 3, 5, 8, 13]
         o_seq = Sequence(user_input)

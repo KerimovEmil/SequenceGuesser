@@ -120,8 +120,8 @@ class HexagonalNumberSequence(SequenceType):
             return False
 
         for i in range(1, self.seq.size):
-            if (2 * (self.n_last_term - i) * (2 * (self.n_last_term - i) - 1)) / 2 != self.seq.ls[
-                self.seq.size - i - 1]:
+            if (2 * (self.n_last_term - i) * (2 * (self.n_last_term - i) - 1)) / 2 != \
+                    self.seq.ls[self.seq.size - i - 1]:
                 return False
         return True
 
@@ -137,3 +137,39 @@ class HexagonalNumberSequence(SequenceType):
 
     def seq_str(self, n):
         return 2 * n * (2 * n - 1) / 2
+
+
+class CentralPolygonalSequence(SequenceType):
+
+    def __init__(self, seq):
+        super(CentralPolygonalSequence, self).__init__(seq)
+        self.n_last_term = 0  # nth term in Central Polygonal Number Sequence for the last term of the testing sequence
+
+    def __bool__(self):
+        """ Checks whether sequence contains Central Polygonal Numbers (Lazy Caterer's Sequence)"""
+
+        # get the nth Central Polygonal Number
+        self.n_last_term = math.floor(max(np.roots([1, 1, 2 - (2 * self.seq.ls[-1])])))
+
+        # last term is not a Central Polygonal number
+        if (self.n_last_term ** 2 + self.n_last_term + 2) / 2 != self.seq.ls[-1]:
+            return False
+
+        for i in range(1, self.seq.size):
+            if ((self.n_last_term - i) ** 2 + ((self.n_last_term - i) + 2)) / 2 != \
+                    self.seq.ls[self.seq.size - i - 1]:
+                return False
+        return True
+
+    @staticmethod
+    def nth_central_polygonal_number(n):
+        """ Get the nth term central polygonal number """
+        return (n ** 2 + n + 2) / 2
+
+    def term_number(self, index):
+        """ Get the ith number in the sequence """
+        req_n_term = self.n_last_term + (index - self.seq.size)
+        return CentralPolygonalSequence.nth_central_polygonal_number(req_n_term)
+
+    def seq_str(self, n):
+        return (n ** 2 + n + 2) / 2
