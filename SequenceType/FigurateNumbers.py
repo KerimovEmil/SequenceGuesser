@@ -3,6 +3,11 @@ import math
 import numpy as np
 
 
+# For regular convex polygonal numbers
+
+# todo add a general figurate sequence which would just recognize as a regular convex polygonal number and use everything else from Polynomial seq
+
+
 class SquareNumberSequence(SequenceType):
 
     def __init__(self, seq):
