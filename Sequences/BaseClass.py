@@ -12,13 +12,12 @@ __author__ = 'Emil Kerimov'
 
 # TODO: Add more possible classes
 
-# Figurate Numbers are specific polynomial sequences and should be checked for prior to the general polynomial one
-ALL_TYPES = [GeometricSequence, GeneralFibonacciSequence, SquareNumberSequence, TriangularNumberSequence,
-             PentagonalNumberSequence, HexagonalNumberSequence, CentralPolygonalSequence, PolynomialSequence, HarmonicSequence,
+ALL_TYPES = [GeometricSequence, GeneralFibonacciSequence, PolynomialSequence, HarmonicSequence,
              CatalanNumberSequence]
+POLY_TYPES = [SquareNumberSequence, TriangularNumberSequence, PentagonalNumberSequence, HexagonalNumberSequence,
+              CentralPolygonalSequence]
 
 
-# todo MICHELLE, make a poly type list and then check the figurate ones in there
 class Sequence:
     def __init__(self, ls):
         self.ls = ls
@@ -38,7 +37,12 @@ class Sequence:
         for seq in ALL_TYPES:
             obj = seq(self)
             if obj:
-                self.type_name = seq.__name__
+                if seq.__name__ == PolynomialSequence.__name__:  # only check for the figurate sequences if polynomial
+                    for poly_seq in POLY_TYPES:
+                        poly_obj = poly_seq(self)
+                        if poly_obj:
+                            self.type_name = poly_seq.__name__
+                self.type_name = seq.__name__ if self.type_name is None else self.type_name
                 self.type_obj = obj
                 return self.type_name
         raise NotImplementedError("Not enough data to determine sequence.")

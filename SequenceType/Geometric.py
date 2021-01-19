@@ -16,8 +16,7 @@ class GeometricSequence(SequenceType):
 
     def __bool__(self):
         """Determines if a sequence of numbers is a geometric sequence, returns true or false"""
-        if self.seq.size <= 2:
-            return False
+
         if self.ratio is None:
             return False
         r = self.seq.ls

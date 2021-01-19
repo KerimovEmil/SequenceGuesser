@@ -10,8 +10,6 @@ class SquareNumberSequence(SequenceType):
 
     def __bool__(self):
         """ Checks whether sequence contains Square Numbers"""
-        if self.seq.size <= 2:
-            return False
 
         # get the root of the first term
         root_term_1 = math.sqrt(self.seq.ls[0])
@@ -39,8 +37,6 @@ class TriangularNumberSequence(SequenceType):
 
     def __bool__(self):
         """ Checks whether sequence contains Triangular Numbers"""
-        if self.seq.size <= 2:
-            return False
 
         # get the nth Triangular Number
         self.n_last_term = math.floor(max(np.roots([1, 1, -(2 * self.seq.ls[-1])])))
