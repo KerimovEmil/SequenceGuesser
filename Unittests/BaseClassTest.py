@@ -63,6 +63,18 @@ class SequenceGuesser(unittest.TestCase):
         ith_number = o_seq.get_ith_number(6)
         self.assertRegex(ith_number, '55')
 
+    def test_pentagonal(self):
+        user_input = [12, 22, 35, 51, 70, 92]
+        o_seq = Sequence(user_input)
+
+        self.assertEqual(o_seq.get_type(), 'PentagonalNumberSequence')
+
+        out_next = o_seq.get_next_number()
+        self.assertRegex(out_next, '117')
+
+        ith_number = o_seq.get_ith_number(9)
+        self.assertRegex(ith_number, '176')
+
     def test_general_fib(self):
         user_input = [1, 2, 3, 5, 8, 13]
         o_seq = Sequence(user_input)
