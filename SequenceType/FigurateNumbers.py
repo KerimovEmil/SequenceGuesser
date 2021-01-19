@@ -1,5 +1,6 @@
 from SequenceType.Base import SequenceType
 import math
+import numpy as np
 
 
 class SquareNumberSequence(SequenceType):
@@ -28,3 +29,40 @@ class SquareNumberSequence(SequenceType):
 
     def seq_str(self, n):
         return n ** 2
+
+
+class TriangularNumberSequence(SequenceType):
+
+    def __init__(self, seq):
+        super(TriangularNumberSequence, self).__init__(seq)
+        self.n_last_term = 0  # nth term in Triangular Number Sequence for the last term of the testing sequence
+
+    def __bool__(self):
+        """ Checks whether sequence contains Square Numbers"""
+        if self.seq.size <= 2:
+            return False
+
+        # get the nth Triangular Number
+        self.n_last_term = math.floor(max(np.roots([1, 1, -(2 * self.seq.ls[-1])])))
+
+        # last term is not a triangular number
+        if (self.n_last_term * (self.n_last_term + 1)) / 2 != self.seq.ls[-1]:
+            return False
+
+        for i in range(1, self.seq.size):
+            if ((self.n_last_term - i) * (self.n_last_term - i + 1)) / 2 != self.seq.ls[self.seq.size - i - 1]:
+                return False
+        return True
+
+    @staticmethod
+    def nth_triangular_number(n):
+        """ Get the nth term triangular number """
+        return n * (n + 1) / 2
+
+    def term_number(self, index):
+        """ Get the ith number in the sequence """
+        req_n_term = self.n_last_term + (index - self.seq.size)
+        return TriangularNumberSequence.nth_triangular_number(req_n_term)
+
+    def seq_str(self, n):
+        return n * (n + 1) / 2
