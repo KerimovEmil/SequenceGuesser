@@ -3,7 +3,8 @@ from SequenceType.GeneralFib import GeneralFibonacciSequence
 from SequenceType.Polynomial import PolynomialSequence
 from SequenceType.Harmonic import HarmonicSequence
 from SequenceType.CatalanNumber import CatalanNumberSequence
-from SequenceType.FigurateNumbers import SquareNumberSequence, TriangularNumberSequence, PentagonalNumberSequence
+from SequenceType.FigurateNumbers import SquareNumberSequence, TriangularNumberSequence, PentagonalNumberSequence, \
+    HexagonalNumberSequence
 import sympy
 from common.util import represent_int
 
@@ -13,7 +14,7 @@ __author__ = 'Emil Kerimov'
 
 # Figurate Numbers are specific polynomial sequences and should be checked for prior to the general polynomial one
 ALL_TYPES = [GeometricSequence, GeneralFibonacciSequence, SquareNumberSequence, TriangularNumberSequence,
-             PentagonalNumberSequence, PolynomialSequence, HarmonicSequence,
+             PentagonalNumberSequence, HexagonalNumberSequence, PolynomialSequence, HarmonicSequence,
              CatalanNumberSequence]
 
 

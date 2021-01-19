@@ -75,6 +75,18 @@ class SequenceGuesser(unittest.TestCase):
         ith_number = o_seq.get_ith_number(9)
         self.assertRegex(ith_number, '176')
 
+    def test_hexagonal(self):
+        user_input = [28, 45, 66, 91]
+        o_seq = Sequence(user_input)
+
+        self.assertEqual(o_seq.get_type(), 'HexagonalNumberSequence')
+
+        out_next = o_seq.get_next_number()
+        self.assertRegex(out_next, '120')
+
+        ith_number = o_seq.get_ith_number(8)
+        self.assertRegex(ith_number, '231')
+
     def test_general_fib(self):
         user_input = [1, 2, 3, 5, 8, 13]
         o_seq = Sequence(user_input)
