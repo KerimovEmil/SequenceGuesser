@@ -1,6 +1,7 @@
 from SequenceType.Base import SequenceType
 from common.util import choose, memoized
 import sympy
+import math
 
 __author__ = 'Emil Kerimov'
 
@@ -114,7 +115,6 @@ class PolynomialSequence(SequenceType):
             # use the first term to get the 'nth' number
             reg_conv_poly_expr = (n_poly / 2) * ((V - 2) * n_poly - (V - 4))
             eqn = sympy.Eq(reg_conv_poly_expr, self.seq.ls[0])
-            import math
 
             root = math.floor(max(list(sympy.solve(eqn, n_poly))).evalf())
             if reg_conv_poly_expr.subs(n_poly, root) != self.seq.ls[0]:
