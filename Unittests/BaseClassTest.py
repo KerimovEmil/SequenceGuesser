@@ -43,7 +43,7 @@ class SequenceGuesser(unittest.TestCase):
         user_input = [16, 25, 36, 49, 64]
         o_seq = Sequence(user_input)
 
-        self.assertEqual(o_seq.get_type(), 'SquareNumberSequence')
+        self.assertEqual(o_seq.get_type(), 'PolynomialSequence_RegularConvexPolygonal_TetragonalNumbers')
 
         out_next = o_seq.get_next_number()
         self.assertRegex(out_next, '81')
@@ -55,7 +55,7 @@ class SequenceGuesser(unittest.TestCase):
         user_input = [15, 21, 28, 36]
         o_seq = Sequence(user_input)
 
-        self.assertEqual(o_seq.get_type(), 'TriangularNumberSequence')
+        self.assertEqual(o_seq.get_type(), 'PolynomialSequence_RegularConvexPolygonal_TrigonalNumbers')
 
         out_next = o_seq.get_next_number()
         self.assertRegex(out_next, '45')
@@ -67,7 +67,7 @@ class SequenceGuesser(unittest.TestCase):
         user_input = [12, 22, 35, 51, 70, 92]
         o_seq = Sequence(user_input)
 
-        self.assertEqual(o_seq.get_type(), 'PentagonalNumberSequence')
+        self.assertEqual(o_seq.get_type(), 'PolynomialSequence_RegularConvexPolygonal_PentagonalNumbers')
 
         out_next = o_seq.get_next_number()
         self.assertRegex(out_next, '117')
@@ -79,25 +79,13 @@ class SequenceGuesser(unittest.TestCase):
         user_input = [28, 45, 66, 91]
         o_seq = Sequence(user_input)
 
-        self.assertEqual(o_seq.get_type(), 'HexagonalNumberSequence')
+        self.assertEqual(o_seq.get_type(), 'PolynomialSequence_RegularConvexPolygonal_HexagonalNumbers')
 
         out_next = o_seq.get_next_number()
         self.assertRegex(out_next, '120')
 
         ith_number = o_seq.get_ith_number(8)
         self.assertRegex(ith_number, '231')
-
-    def test_central_polygonal(self):
-        user_input = [29, 37, 46, 56]
-        o_seq = Sequence(user_input)
-
-        self.assertEqual(o_seq.get_type(), 'CentralPolygonalSequence')
-
-        out_next = o_seq.get_next_number()
-        self.assertRegex(out_next, '67')
-
-        ith_number = o_seq.get_ith_number(9)
-        self.assertRegex(ith_number, '121')
 
     def test_general_fib(self):
         user_input = [1, 2, 3, 5, 8, 13]

@@ -3,8 +3,6 @@ from SequenceType.GeneralFib import GeneralFibonacciSequence
 from SequenceType.Polynomial import PolynomialSequence
 from SequenceType.Harmonic import HarmonicSequence
 from SequenceType.CatalanNumber import CatalanNumberSequence
-from SequenceType.FigurateNumbers import SquareNumberSequence, TriangularNumberSequence, PentagonalNumberSequence, \
-    HexagonalNumberSequence, CentralPolygonalSequence
 import sympy
 from common.util import represent_int
 
@@ -14,8 +12,6 @@ __author__ = 'Emil Kerimov'
 
 ALL_TYPES = [GeometricSequence, GeneralFibonacciSequence, PolynomialSequence, HarmonicSequence,
              CatalanNumberSequence]
-POLY_TYPES = [SquareNumberSequence, TriangularNumberSequence, PentagonalNumberSequence, HexagonalNumberSequence,
-              CentralPolygonalSequence]
 
 
 class Sequence:
@@ -29,6 +25,7 @@ class Sequence:
         self.type_name = None
         self.type_obj = None
         self.next_number = None
+        self.expression = None
 
     def __bool__(self):
         raise NotImplementedError("not yet")
@@ -38,13 +35,18 @@ class Sequence:
             obj = seq(self)
             if obj:
                 if seq.__name__ == PolynomialSequence.__name__:  # only check for the figurate sequences if polynomial
-                    for poly_seq in POLY_TYPES:
-                        poly_obj = poly_seq(self)
-                        if poly_obj:
-                            self.type_name = poly_seq.__name__
-                self.type_name = seq.__name__ if self.type_name is None else self.type_name
+                    n = sympy.Symbol('n')
+                    self.expression = obj.seq_str(n)
+                    polygonal_number = obj.polygonal_number(self.expression, n)
+                    if polygonal_number:
+                        res_str = "_".join([seq.__name__, polygonal_number])
+                self.type_name = seq.__name__
                 self.type_obj = obj
-                return self.type_name
+
+                if not 'res_str' in locals():
+                    res_str = self.type_name
+
+                return res_str
         raise NotImplementedError("Not enough data to determine sequence.")
 
     def get_next_number(self):
@@ -76,8 +78,9 @@ class Sequence:
 
         t = sympy.Symbol('T(n)')
         n = sympy.Symbol('n')
-        expression = self.type_obj.seq_str(n).simplify()
-        string = sympy.Eq(t, expression)
+        if self.expression is None: 
+            self.expression = self.type_obj.seq_str(n)
+        string = sympy.Eq(t, self.expression.simplify())
         return sympy.latex(string)
 
         # return self.type_obj.seq_str()
