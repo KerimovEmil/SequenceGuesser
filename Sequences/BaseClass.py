@@ -9,7 +9,9 @@ from common.util import represent_int
 __author__ = 'Emil Kerimov'
 
 # TODO: Add more possible classes
-ALL_TYPES = [GeometricSequence, GeneralFibonacciSequence, PolynomialSequence, HarmonicSequence, CatalanNumberSequence]
+
+ALL_TYPES = [GeometricSequence, GeneralFibonacciSequence, PolynomialSequence, HarmonicSequence,
+             CatalanNumberSequence]
 
 
 class Sequence:
@@ -17,9 +19,13 @@ class Sequence:
         self.ls = ls
         self.size = len(self.ls)
 
+        if self.size <= 2:
+            raise Exception('Sequence provided must contain at least 3 elements')
+
         self.type_name = None
         self.type_obj = None
         self.next_number = None
+        self.expression = None
 
     def __bool__(self):
         raise NotImplementedError("not yet")
@@ -28,9 +34,19 @@ class Sequence:
         for seq in ALL_TYPES:
             obj = seq(self)
             if obj:
+                if seq.__name__ == PolynomialSequence.__name__:  # only check for the figurate sequences if polynomial
+                    n = sympy.Symbol('n')
+                    self.expression = obj.seq_str(n)
+                    polygonal_number = obj.polygonal_number(self.expression, n)
+                    if polygonal_number:
+                        res_str = "_".join([seq.__name__, polygonal_number])
                 self.type_name = seq.__name__
                 self.type_obj = obj
-                return self.type_name
+
+                if not 'res_str' in locals():
+                    res_str = self.type_name
+
+                return res_str
         raise NotImplementedError("Not enough data to determine sequence.")
 
     def get_next_number(self):
@@ -62,8 +78,9 @@ class Sequence:
 
         t = sympy.Symbol('T(n)')
         n = sympy.Symbol('n')
-        expression = self.type_obj.seq_str(n).simplify()
-        string = sympy.Eq(t, expression)
+        if self.expression is None: 
+            self.expression = self.type_obj.seq_str(n)
+        string = sympy.Eq(t, self.expression.simplify())
         return sympy.latex(string)
 
         # return self.type_obj.seq_str()

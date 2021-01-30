@@ -13,9 +13,6 @@ class CatalanNumberSequence(SequenceType):
     def __bool__(self):
         """ Check whether sequence is Catalan Numbers """
 
-        if self.seq.size <= 2:
-            return False
-
         # solve for the catalan term position of the first number
         # arbitrarily start with initial guess of 5
         # todo think about this because it won't work with much larger numbers
