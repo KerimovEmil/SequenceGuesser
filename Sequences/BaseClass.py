@@ -3,6 +3,7 @@ from SequenceType.GeneralFib import GeneralFibonacciSequence
 from SequenceType.Polynomial import PolynomialSequence
 from SequenceType.Harmonic import HarmonicSequence
 from SequenceType.CatalanNumber import CatalanNumberSequence
+from SequenceType.RecurrenceRelation import RecurrenceSequence
 import sympy
 from common.util import represent_int
 
@@ -11,7 +12,7 @@ __author__ = 'Emil Kerimov'
 # TODO: Add more possible classes
 
 ALL_TYPES = [GeometricSequence, GeneralFibonacciSequence, PolynomialSequence, HarmonicSequence,
-             CatalanNumberSequence]
+             CatalanNumberSequence, RecurrenceSequence]  # todo change the order
 
 
 class Sequence:
@@ -42,6 +43,7 @@ class Sequence:
                         res_str = "_".join([seq.__name__, polygonal_number])
                 self.type_name = seq.__name__
                 self.type_obj = obj
+                self.type_obj()  # executes the call method
 
                 if not 'res_str' in locals():
                     res_str = self.type_name
