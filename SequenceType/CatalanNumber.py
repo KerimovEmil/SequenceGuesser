@@ -8,7 +8,7 @@ class CatalanNumberSequence(SequenceType):
 
     def __init__(self, seq):
         super(CatalanNumberSequence, self).__init__(seq)
-        self.n = 0  # nth catalan number.  Number in the 0,1,2,3,etc catalan sequence
+        self.n = 0  # nth catalan number.  Number in the 0,1,2,3,etc. catalan sequence
 
     def __bool__(self):
         """ Check whether sequence is Catalan Numbers """
