@@ -38,14 +38,14 @@ class RecurrenceSequence(SequenceType):
 
     @staticmethod
     def get_next_item(dc: Dict[int, List[int]], row: int, col: int):
-        # solve the formula x*d[row-1,col] + d[row-1,col]*d[row+1,col] = d[row,col]^2
-        # if d[row-1,col] is 0 then solves the following equation:
-        # x * d[row - 2, col]^2 + d[row-3,col] * d[row,col]^2
-        # = d[row-1, col-1]^2 * d[row-1, col+2] + d[row-1, col+1]^2 * d[row-1, col-2]
 
+        # solve the formula x*d[row-1,col] + d[row-1,col]*d[row+1,col] = d[row,col]^2
         if dc[row-1][col] != 0:
             term = (dc[row][col]**2 - dc[row][col-1]*dc[row][col+1]) / dc[row-1][col]
         else:
+            # if d[row-1,col] is 0 then solves the following equation:
+            # x * d[row - 2, col]^2 + d[row-3,col] * d[row,col]^2
+            # = d[row-1, col-1]^2 * d[row-1, col+2] + d[row-1, col+1]^2 * d[row-1, col-2]
             if dc[row-2][col] != 0:
                 num = dc[row-1][col-1]**2 * dc[row-1][col+2] + dc[row-1][col+1]**2 * dc[row-1][col-2] - \
                       dc[row][col]**2 * dc[row-3][col]
@@ -109,16 +109,16 @@ class RecurrenceSequence(SequenceType):
         # n=0 -> a+b=6 -> (1  1) (a) = (6)
         # n=1 -> a-b=7    (1 -1) (b)   (7)
         for n in range(degree):
-            coeff_matrix[n] = [root**n for root in roots]
+            coeff_matrix[n] = [simplify(root**n) for root in roots]
         coeff_matrix = Matrix(coeff_matrix)
 
         # create b vector: Ax=b
         b = Matrix(self.seq.ls[:degree])
 
-        # coefficients
-        coeff = coeff_matrix.pow(-1) @ b
+        # coefficients  # todo, this matrix inverse is too slow for harder cases, might switch to numeric instead
+        coeff = coeff_matrix.inv(method='GE') @ b
 
-        # general terms, in case of repeated roots this is more complicates
+        # general terms, in case of repeated roots this is more complicated
         terms = roots
 
         return coeff, terms
@@ -128,8 +128,8 @@ class RecurrenceSequence(SequenceType):
         n = Symbol('n')
         s = 0
         for i in range(len(self.coeff)):
-            s += self.coeff[i] * (self.terms[i]**n)
-        return s, n
+            s += simplify(self.coeff[i] * (self.terms[i]**n))
+        return simplify(s), n
 
     def term_number(self, index):
         """ The ith number in the sequence. """
