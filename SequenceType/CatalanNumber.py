@@ -10,13 +10,15 @@ class CatalanNumberSequence(SequenceType):
         super(CatalanNumberSequence, self).__init__(seq)
         self.n = 0  # nth catalan number.  Number in the 0,1,2,3,etc. catalan sequence
 
+    # todo: replace this check with first a call to the general recursive function and then check against the
+    #  Catalan number recursive formula
     def __bool__(self):
         """ Check whether sequence is Catalan Numbers """
 
         # solve for the catalan term position of the first number
         # arbitrarily start with initial guess of 5
         # todo think about this because it won't work with much larger numbers
-        self.n = round(fsolve(lambda x: (comb(2 * x, x) * 1 / (x + 1)) - self.seq.ls[0], 5)[0])
+        self.n = round(fsolve(lambda x: (comb(2 * x, x) / (x + 1)) - self.seq.ls[0], 5)[0])
 
         if self.n == 1 and self.seq.ls[1] == 1:
             self.n = 0
