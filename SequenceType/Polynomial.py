@@ -1,5 +1,7 @@
 from SequenceType.Base import SequenceType
 from common.util import choose, memoized
+import sympy
+import math
 
 __author__ = 'Emil Kerimov'
 
@@ -61,15 +63,71 @@ class PolynomialSequence(SequenceType):
         def f(d):
             """Returns (1/d!)(n-1)(n-2)...(n-d)"""
             w = 1
-            for i in range(1, d+1):
+            for i in range(1, d + 1):
                 w *= (n - i) / i
             return w
 
         expression = 0
-        for diff in range(self.level+1):
+        for diff in range(self.level + 1):
             expression += f(diff) * self.first(diff)
         # str(r[0]) + " + (n-1)" + str(r[1] - r[0]) + " + (1/2)(n-1)(n-2)" + str(r[2] - 2 * (r[1] - r[0]) - r[0])
         return expression
 
     def sum_str(self):
         return None
+
+    def polygonal_number(self, input_expression, n):
+        """
+        Check whether the polynomial sequence is also a regular convex polygonal number sequence
+        Checks up to 20 sides
+
+        Args:
+            input_expression: <sympy.core.add.Add> expression of the sequence
+            n: <sympy.core.symbol.Symbol> symbol n, term number in the sequence
+
+        Returns:
+            <str> Polygonal Number sequence name i.e. RegularConvexPolygonal_TrigonalNumbers, or False if not one
+
+        """
+        dict_type = {3: 'TrigonalNumbers',
+                     4: 'TetragonalNumbers',
+                     5: 'PentagonalNumbers',
+                     6: 'HexagonalNumbers',
+                     7: 'HeptagonalNumbers',
+                     8: 'OctagonalNumbers',
+                     9: 'NonagonalNumbers',
+                     10: 'DecagonalNumbers',
+                     11: 'HendecagonalNumbers',
+                     12: 'DodecagonalNumbers',
+                     13: 'TridecagonalNumbers',
+                     14: 'TetradecagonalNumbers',
+                     15: 'PentadecagonalNumbers',
+                     16: 'HexadecagonalNumbers',
+                     17: 'HeptadecagonalNumbers',
+                     18: 'OctadecagonalNumbers',
+                     19: 'NonadecagonalNumbers',
+                     20: 'IcosagonalNumbers'}
+        n_poly = sympy.Symbol('n_poly')
+
+        # get number of sides
+        res_V = False
+        for V in range(3, 21):
+            # use the first term to get the 'nth' number
+            reg_conv_poly_expr = (n_poly / 2) * ((V - 2) * n_poly - (V - 4))
+            eqn = sympy.Eq(reg_conv_poly_expr, self.seq.ls[0])
+
+            root = math.floor(max(list(sympy.solve(eqn, n_poly))).evalf())
+            if reg_conv_poly_expr.subs(n_poly, root) != self.seq.ls[0]:
+                continue
+
+            # root is the nth polygonal number of the first sequence term
+            if sympy.simplify(input_expression.subs(n, n_poly - (root - 1)) - reg_conv_poly_expr) == 0:
+                res_V = V
+                break
+
+        res = dict_type.get(res_V, False)
+
+        if not res:
+            return False
+        else:
+            return '_'.join(['RegularConvexPolygonal', res])
