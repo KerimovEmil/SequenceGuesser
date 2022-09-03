@@ -1,4 +1,4 @@
-from collections.abc import Hashable
+from collections.abc import Hashable, Sequence
 import functools
 
 
@@ -51,3 +51,22 @@ def represent_int(number):
         return int(number)
     else:
         return number
+
+
+class ConstantRow(Sequence):
+
+    def __init__(self, value):
+        self.value = value
+        super().__init__()
+
+    def __getitem__(self, i):
+        return self.value
+
+    def __len__(self):
+        raise NotImplementedError
+
+    def __str__(self):
+        return f'[{self.value}]'
+
+    def __repr__(self):
+        return self.__str__()
