@@ -6,14 +6,17 @@ import copy
 class HarmonicSequence(SequenceType):
 
     def __init__(self, seq):
-        super(HarmonicSequence, self).__init__(seq)
-        seq_copy = copy.deepcopy(seq)
-        seq_copy.ls = [1 / x for x in seq.ls]
-
-        self.reciprocal_seq = seq_copy
-        self.potential_poly_seq = PolynomialSequence(self.reciprocal_seq)
+        super().__init__(seq)
 
     def __bool__(self):
+        if any(x == 0 for x in self.seq.ls):
+            return False
+
+        reciprocal_seq = copy.deepcopy(self.seq)
+        reciprocal_seq.ls = [1 / x for x in self.seq.ls]
+
+        self.potential_poly_seq = PolynomialSequence(reciprocal_seq)
+
         # if reciprocals are arithmetic sequence
         poly_bool = self.potential_poly_seq.__bool__()
         return poly_bool

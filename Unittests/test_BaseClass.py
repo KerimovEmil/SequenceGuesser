@@ -136,3 +136,21 @@ class SequenceGuesser(unittest.TestCase):
 
         ith_number = o_seq.get_ith_number(15)
         self.assertRegex(ith_number, '0')
+
+    def test_tribonacci(self):
+        # see closed form calculation here:
+        # https://github.com/KerimovEmil/MathLatexDocs/blob/main/pdfs/tribonacci_numbers_main.pdf
+
+        user_input = [0, 1, 1, 2, 4, 7, 13, 24, 44, 81]
+        o_seq = Sequence(user_input)
+
+        with self.subTest(msg=f'Testing correct type'):
+            self.assertEqual(o_seq.get_type(), 'RecurrenceSequence')
+
+        out_next = o_seq.get_next_number()
+        with self.subTest(msg=f'Testing correct next number'):
+            self.assertRegex(out_next, '149')
+
+        ith_number = o_seq.get_ith_number(8)
+        with self.subTest(msg=f'Testing correct 8th number'):
+            self.assertRegex(ith_number, '24')

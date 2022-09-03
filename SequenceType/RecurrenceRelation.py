@@ -1,6 +1,6 @@
 from SequenceType.Base import SequenceType
 from common.util import ConstantRow
-from typing import List
+from typing import List, Dict
 from functools import lru_cache
 from sympy import Symbol, simplify, solve, Matrix
 
@@ -26,7 +26,7 @@ class RecurrenceSequence(SequenceType):
             self.dc_seq[j + 1] = [None] * j
             for i in range(j, len(self.dc_seq[j]) - 1):
                 # for just numbers
-                term = (self.dc_seq[j][i]**2 - self.dc_seq[j][i-1]*self.dc_seq[j][i+1])//self.dc_seq[j-1][i]
+                term = self.get_next_item(self.dc_seq, row=j, col=i)
                 self.dc_seq[j+1].append(term)
 
             ls_non_none = [x for x in self.dc_seq[j+1] if x is not None]
@@ -35,6 +35,25 @@ class RecurrenceSequence(SequenceType):
                 return True
 
         return False
+
+    @staticmethod
+    def get_next_item(dc: Dict[int, List[int]], row: int, col: int):
+        # solve the formula x*d[row-1,col] + d[row-1,col]*d[row+1,col] = d[row,col]^2
+        # if d[row-1,col] is 0 then solves the following equation:
+        # x * d[row - 2, col]^2 + d[row-3,col] * d[row,col]^2
+        # = d[row-1, col-1]^2 * d[row-1, col+2] + d[row-1, col+1]^2 * d[row-1, col-2]
+
+        if dc[row-1][col] != 0:
+            term = (dc[row][col]**2 - dc[row][col-1]*dc[row][col+1]) / dc[row-1][col]
+        else:
+            if dc[row-2][col] != 0:
+                num = dc[row-1][col-1]**2 * dc[row-1][col+2] + dc[row-1][col+1]**2 * dc[row-1][col-2] - \
+                      dc[row][col]**2 * dc[row-3][col]
+                term = num / (dc[row - 2][col]**2)
+            else:
+                raise NotImplementedError('need to implement general square of zeros handling')
+
+        return term
 
     @staticmethod
     def check_termination(ls_seq: List[int]):
@@ -54,7 +73,7 @@ class RecurrenceSequence(SequenceType):
             # print(j, dc_sec)
             for i in range(j, len(dc_seq[j]) - 1):
                 # sympy example
-                term = (dc_seq[j][i] ** 2 - dc_seq[j][i - 1] * dc_seq[j][i + 1]) / dc_seq[j - 1][i]
+                term = self.get_next_item(dc_seq, row=j, col=i)
                 dc_seq[j + 1].append(simplify(term))
 
             ls_non_none = [x for x in dc_seq[j+1] if x is not None]
