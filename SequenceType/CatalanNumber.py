@@ -4,7 +4,7 @@ from scipy.optimize import fsolve
 from sympy import factorial
 
 
-class CatalanNumberSequence(SequenceType):
+class CatalanNumberSequence(SequenceType):  # todo make this only be tested if it is a particular recurrence relation
 
     def __init__(self, seq):
         super(CatalanNumberSequence, self).__init__(seq)
