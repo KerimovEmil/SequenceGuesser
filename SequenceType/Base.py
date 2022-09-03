@@ -28,3 +28,6 @@ class SequenceType:
     def sum_str(self):
         """Returns a string with the equation for the sum up to the nth term. """
         raise NotImplementedError
+
+    def __call__(self):
+        pass
