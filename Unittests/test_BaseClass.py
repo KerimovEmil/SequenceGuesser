@@ -145,7 +145,7 @@ class SequenceGuesser(unittest.TestCase):
         o_seq = Sequence(user_input)
 
         with self.subTest(msg=f'Testing correct type'):
-            self.assertEqual(o_seq.get_type(), 'RecurrenceSequence')
+            self.assertEqual(o_seq.get_type(), 'LinearRecurrenceSequence')
 
         out_next = o_seq.get_next_number()
         with self.subTest(msg=f'Testing correct next number'):

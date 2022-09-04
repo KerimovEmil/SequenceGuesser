@@ -3,7 +3,7 @@ from SequenceType.GeneralFib import GeneralFibonacciSequence
 from SequenceType.Polynomial import PolynomialSequence
 from SequenceType.Harmonic import HarmonicSequence
 from SequenceType.CatalanNumber import CatalanNumberSequence
-from SequenceType.RecurrenceRelation import RecurrenceSequence
+from SequenceType.RecurrenceRelation import LinearRecurrenceSequence
 import sympy
 from common.util import represent_int
 
@@ -12,7 +12,7 @@ __author__ = 'Emil Kerimov'
 # TODO: Add more possible classes
 
 ALL_TYPES = [GeometricSequence, GeneralFibonacciSequence, PolynomialSequence, HarmonicSequence,
-             CatalanNumberSequence, RecurrenceSequence]  # todo change the order
+             CatalanNumberSequence, LinearRecurrenceSequence]  # todo change the order
 
 
 class Sequence:

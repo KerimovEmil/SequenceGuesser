@@ -2,12 +2,12 @@ from SequenceType.Base import SequenceType
 from common.util import ConstantRow
 from typing import List, Dict
 from functools import lru_cache
-from sympy import Symbol, simplify, solve, Matrix
+from sympy import Symbol, simplify, solve, Matrix, gcd
 
 __author__ = 'Emil Kerimov'
 
 
-class RecurrenceSequence(SequenceType):
+class LinearRecurrenceSequence(SequenceType):
 
     def __init__(self, seq):
         super().__init__(seq)
@@ -122,6 +122,56 @@ class RecurrenceSequence(SequenceType):
         terms = roots
 
         return coeff, terms
+
+    @lru_cache(maxsize=1)
+    def get_underlying_recurrence_relation(self) -> str:
+        """
+        Replace generating function with recurrence relation.
+        i.e.
+        1) c*(x^2 - 2) -> f(n+2) = 2f(n)
+        2) c*(x^2 - x - 1) -> f(n+2) = f(n+1) + f(n)
+        """
+        ls_coeff = self.sympy_generating_function.as_poly().all_coeffs()
+
+        # divide by the gcd of all of these numbers, i.e. 5x^2 - 10x -> x^2 - 2x
+        g = gcd(ls_coeff)
+        ls_coeff_scaled = [x//g for x in ls_coeff]  # [1, 0, -2] -> x^2 + 0x - 2 = 0
+
+        # translate powers of x as shifts in function (T operator)
+        str_out = ''
+        degree = len(ls_coeff_scaled)
+
+        for d in range(len(ls_coeff_scaled)):
+            # special coefficient handling
+            c = ls_coeff_scaled[d]
+            if c == 0:  # skip term is 0 coefficient
+                continue
+            elif abs(c) == 1:
+                c_str = ''
+            else:
+                c_str = abs(c)
+
+            # determine sign of term
+            if len(str_out) == 0:
+                sign = ''
+            else:
+                if ls_coeff_scaled[d] > 0:
+                    sign = ' + '
+                else:
+                    sign = ' - '
+
+            # special degree handling
+            term = degree - d - 1
+            if term == 0:
+                term_str = 'x'
+            else:
+                term_str = f'x + {term}'
+
+            str_out += sign + f'{c_str}f({term_str})'
+
+        str_out += ' = 0'
+
+        return str_out
 
     @lru_cache(maxsize=1)
     def create_sympy_analytic(self):
