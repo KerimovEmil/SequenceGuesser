@@ -1,5 +1,5 @@
 import unittest
-from SequenceType.RecurrenceRelation import RecurrenceSequence
+from SequenceType.RecurrenceRelation import LinearRecurrenceSequence
 
 
 class RecurrenceRelationTest(unittest.TestCase):
@@ -11,13 +11,15 @@ class RecurrenceRelationTest(unittest.TestCase):
                 self.ls = ls
                 self.size = len(self.ls)
 
-        obj = RecurrenceSequence(MiniSeq(ls))
+        obj = LinearRecurrenceSequence(MiniSeq(ls))
         self.assertTrue(obj.__bool__())
         obj()
-        # print(obj.sympy_analytic)
         for i in range(len(ls)):
             with self.subTest(msg=f'Testing {i}th number'):
                 self.assertEqual(ls[i], obj.term_number(i + 1))
+
+        with self.subTest(msg=f'Testing recurrence str'):
+            self.assertEqual('f(x + 2) - 2f(x) = 0', obj.get_underlying_recurrence_relation())
 
 
 if __name__ == '__main__':
