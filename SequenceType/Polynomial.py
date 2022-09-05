@@ -107,21 +107,26 @@ class PolynomialSequence(SequenceType):
                      18: 'OctadecagonalNumbers',
                      19: 'NonadecagonalNumbers',
                      20: 'IcosagonalNumbers'}
-        n_poly = sympy.Symbol('n_poly')
+
+        # if first number is a negative number, return false
+        if self.seq.ls[0] < 0:
+            return False
+
+        n = sympy.Symbol('n')
 
         # get number of sides
         res_V = False
         for V in range(3, 21):
             # use the first term to get the 'nth' number
-            reg_conv_poly_expr = (n_poly / 2) * ((V - 2) * n_poly - (V - 4))
+            reg_conv_poly_expr = (n / 2) * ((V - 2) * n - (V - 4))
             eqn = sympy.Eq(reg_conv_poly_expr, self.seq.ls[0])
 
-            root = math.floor(max(list(sympy.solve(eqn, n_poly))).evalf())
-            if reg_conv_poly_expr.subs(n_poly, root) != self.seq.ls[0]:
+            root = math.floor(max(list(sympy.solve(eqn, n))).evalf())
+            if reg_conv_poly_expr.subs(n, root) != self.seq.ls[0]:
                 continue
 
             # root is the nth polygonal number of the first sequence term
-            if sympy.simplify(input_expression.subs(n, n_poly - (root - 1)) - reg_conv_poly_expr) == 0:
+            if sympy.simplify(input_expression.subs(n, n - (root - 1)) - reg_conv_poly_expr) == 0:
                 res_V = V
                 break
 
