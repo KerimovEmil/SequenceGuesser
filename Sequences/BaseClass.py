@@ -35,6 +35,7 @@ class Sequence:
         for seq in ALL_TYPES:
             obj = seq(self)
             if obj:
+                # todo generalize the idea of special sequences of some form
                 if seq.__name__ == PolynomialSequence.__name__:  # only check for the figurate sequences if polynomial
                     n = sympy.Symbol('n')
                     self.expression = obj.seq_str(n)

@@ -11,14 +11,15 @@ if __name__ == '__main__':
     # user_input = [6, 6, 6, 6]
     # user_input = [0, 0, 0, 0]
     # user_input = [1, -1, 1, -1]
-    user_input = [-3, 4, 23, 60, 121]
+    # user_input = [-3, 4, 23, 60, 121]
     # user_input = [2.718281828459045, 7.3890560989306495, 20.085536923187664, 54.59815003314423, 148.41315910257657]
     # user_input = [1, 22, 97, 286, 673, 1366, 2497, 4222, 6721]
     # user_input = [6, 7, 12, 14, 24, 28, 48, 56, 96]
     # user_input = [0, 1, 1, 2, 4, 7, 13, 24, 44, 81]
     # user_input = [6, 7, 13, 20, 33, 53, 86, 139, 225]
     # user_input = [2, 1, 3, 4, 7, 11]
-    index = 20
+    user_input = [6, 7, 12, 14, 24, 28, 48, 56, 96]
+    index = 20  # todo fix T(n) = 7 n
 
     Seq = Sequence(user_input)
     print(Seq.get_type())

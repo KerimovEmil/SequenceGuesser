@@ -89,8 +89,19 @@ class LinearRecurrenceSequence(SequenceType):
         if not self.__bool__():
             raise NotImplementedError
 
+        self.set_sympy_generating_function()
+        # todo make the main return by the recurrence relation. Compute analytical form be separate.
+        self.underlying_recurrence_relation = self.get_underlying_recurrence_relation()
+        self.set_full_analytic_solution()
+        self.set_sympy_analytic()
+
+    def set_sympy_generating_function(self):  # todo make these better methods.
         self.sympy_generating_function, self.x = self.get_sympy_expression()
+
+    def set_full_analytic_solution(self):
         self.coeff, self.terms = self.get_analytic_expression()
+
+    def set_sympy_analytic(self):
         self.sympy_analytic, self.n = self.create_sympy_analytic()
 
     @lru_cache(maxsize=1)
@@ -135,6 +146,9 @@ class LinearRecurrenceSequence(SequenceType):
 
         # divide by the gcd of all of these numbers, i.e. 5x^2 - 10x -> x^2 - 2x
         g = gcd(ls_coeff)
+        # account for first sign
+        if ls_coeff[0] < 0:
+            g = -g
         ls_coeff_scaled = [x//g for x in ls_coeff]  # [1, 0, -2] -> x^2 + 0x - 2 = 0
 
         # translate powers of x as shifts in function (T operator)
