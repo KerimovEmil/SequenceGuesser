@@ -177,9 +177,9 @@ class LinearRecurrenceSequence(SequenceType):
             # special degree handling
             term = degree - d - 1
             if term == 0:
-                term_str = 'x'
+                term_str = 'n'
             else:
-                term_str = f'x + {term}'
+                term_str = f'n + {term}'
 
             str_out += sign + f'{c_str}f({term_str})'
 
@@ -208,7 +208,7 @@ class LinearRecurrenceSequence(SequenceType):
         Returns a string with the equation for each term.
         n: Sympy Symbol Object
         """
-        return self.sympy_analytic.subs(self.n, n)
+        return self.sympy_analytic.subs(self.n, n - 1)
 
     def sum_str(self):
         """Returns a string with the equation for the sum up to the nth term. """

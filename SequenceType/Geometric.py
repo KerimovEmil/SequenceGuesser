@@ -36,7 +36,7 @@ class GeometricSequence(SequenceType):
     def seq_str(self, n):
         a = represent_int(self.seq.ls[0])
         r = represent_int(self.ratio)
-        expression = a * r**n
+        expression = a * r**(n - 1)
         return expression
 
     def sum_str(self):

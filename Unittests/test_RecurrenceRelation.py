@@ -19,7 +19,7 @@ class RecurrenceRelationTest(unittest.TestCase):
                 self.assertEqual(ls[i], obj.term_number(i + 1))
 
         with self.subTest(msg=f'Testing recurrence str'):
-            self.assertEqual('f(x + 2) - 2f(x) = 0', obj.get_underlying_recurrence_relation())
+            self.assertEqual('f(n + 2) - 2f(n) = 0', obj.get_underlying_recurrence_relation())
 
 
 if __name__ == '__main__':
