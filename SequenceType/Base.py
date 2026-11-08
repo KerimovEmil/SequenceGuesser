@@ -1,15 +1,19 @@
+from abc import ABC, abstractmethod
+
 __author__ = 'Emil Kerimov'
 
 
-class SequenceType:
+class SequenceType(ABC):
 
     def __init__(self, seq):
         self.seq = seq
 
+    @abstractmethod
     def __bool__(self):
         """Determines if a sequence is this type"""
         raise NotImplementedError
 
+    @abstractmethod
     def term_number(self, index):
         """ The ith number in the sequence. """
         raise NotImplementedError
@@ -18,6 +22,7 @@ class SequenceType:
         """ The sum of the first n terms. """
         raise NotImplementedError
 
+    @abstractmethod
     def seq_str(self, n):
         """
         Returns a string with the equation for each term.
@@ -27,7 +32,7 @@ class SequenceType:
 
     def sum_str(self):
         """Returns a string with the equation for the sum up to the nth term. """
-        raise NotImplementedError
+        return None
 
     def __call__(self):
         pass
