@@ -150,6 +150,8 @@ class SequenceGuesser(unittest.TestCase):
 
         o_seq = Sequence(user_input)
 
+        self.assertEqual(o_seq.get_type(), 'PolynomialSequence')
+
         out_next = o_seq.get_next_number()
         self.assertRegex(out_next, '0')
 
@@ -181,3 +183,28 @@ class SequenceGuesser(unittest.TestCase):
         self.assertEqual(sympy.simplify(o_seq.expression.subs(n, 1)), 0)
         self.assertEqual(sympy.simplify(o_seq.expression.subs(n, 2)), 1)
         self.assertEqual(sympy.simplify(o_seq.expression.subs(n, 3)), 1)
+
+    def test_catalan_from_c0(self):
+        user_input = [1, 1, 2, 5, 14, 42]
+        o_seq = Sequence(user_input)
+
+        self.assertEqual(o_seq.get_type(), 'CatalanNumberSequence')
+        out_next = o_seq.get_next_number()
+        self.assertRegex(out_next, '132')
+
+    def test_geometric_zeros(self):
+        from SequenceType.Geometric import GeometricSequence
+        class Mini:
+            ls = [1, 0, 0, 0]
+            size = 4
+        geo = GeometricSequence(Mini())
+        self.assertFalse(bool(geo))
+
+    def test_geometric_sum_term(self):
+        from SequenceType.Geometric import GeometricSequence
+        class Mini:
+            ls = [3, 3, 3, 3]
+            size = 4
+        geo = GeometricSequence(Mini())
+        self.assertTrue(bool(geo))
+        self.assertEqual(geo.sum_term(5), 15)
