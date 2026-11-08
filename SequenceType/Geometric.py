@@ -21,7 +21,7 @@ class GeometricSequence(SequenceType):
             return False
         r = self.seq.ls
         for i in range(self.seq.size - 1):
-            if self.ratio != r[i + 1] / r[i]:
+            if r[i] == 0 or self.ratio != r[i + 1] / r[i]:
                 return False
         return True
 
@@ -31,6 +31,8 @@ class GeometricSequence(SequenceType):
 
     def sum_term(self, n):
         """ The sum of the first n terms. """
+        if self.ratio == 1:
+            return self.seq.ls[0] * n
         return self.seq.ls[0] * (self.ratio ** n - 1) / (self.ratio - 1)
 
     def seq_str(self, n):

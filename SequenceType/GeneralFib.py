@@ -14,6 +14,8 @@ class GeneralFibonacciSequence(SequenceType):
 
     def __bool__(self):
         """Determines if a sequence of numbers is almost a fibonacci sequence, returns true or false"""
+        if all(x == 0 for x in self.seq.ls):
+            return False
 
         r = self.seq.ls
         for i in range(self.seq.size - 2):
