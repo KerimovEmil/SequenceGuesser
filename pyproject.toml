@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sequence-guesser"
+version = "0.1.0"
+description = "Given a sequence of numbers, finds the closed-form expression that defines the sequence."
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    { name = "Emil Kerimov" }
+]
+dependencies = [
+    "sympy>=1.13.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["SequenceType*", "Sequences*", "common*", "pell_equation*"]

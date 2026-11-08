@@ -208,3 +208,20 @@ class SequenceGuesser(unittest.TestCase):
         geo = GeometricSequence(Mini())
         self.assertTrue(bool(geo))
         self.assertEqual(geo.sum_term(5), 15)
+
+    def test_numeric_api_and_ordinals(self):
+        s = Sequence([2, 4, 8, 16])
+        self.assertTrue(bool(s))
+        self.assertEqual(s.next_value(), 32)
+        self.assertEqual(s.next_number, 32)
+        self.assertEqual(s.ith_value(1), 2)
+        self.assertEqual(s.ith_value(5), 32)
+        self.assertIn("1st", s.get_ith_number(1))
+        self.assertIn("2nd", s.get_ith_number(2))
+        self.assertIn("3rd", s.get_ith_number(3))
+        self.assertIn("4th", s.get_ith_number(4))
+        self.assertEqual(repr(s), "Sequence([2, 4, 8, 16])")
+
+    def test_size_validation(self):
+        with self.assertRaises(ValueError):
+            Sequence([1, 2])
