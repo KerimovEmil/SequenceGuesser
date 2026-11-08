@@ -15,6 +15,13 @@ class SequenceGuesser(unittest.TestCase):
         ith_number = o_seq.get_ith_number(8)
         self.assertRegex(ith_number, '128')
 
+        # Test closed-form expression matches 1-based sequence
+        o_seq.get_term_str()
+        import sympy
+        n = sympy.Symbol('n')
+        self.assertEqual(sympy.simplify(o_seq.expression.subs(n, 1)), 1)
+        self.assertEqual(sympy.simplify(o_seq.expression.subs(n, 2)), 2)
+
     def test_harmonic_progression(self):
         user_input = [1 / 16, 1 / 13, 1 / 10, 1 / 7]
         o_seq = Sequence(user_input)
@@ -99,6 +106,18 @@ class SequenceGuesser(unittest.TestCase):
         ith_number = o_seq.get_ith_number(8)
         self.assertRegex(ith_number, '34')
 
+        # Test base terms that previously raised NotImplementedError
+        self.assertRegex(o_seq.get_ith_number(1), '1')
+        self.assertRegex(o_seq.get_ith_number(2), '2')
+
+        # Test closed-form Binet expression matches sequence
+        o_seq.get_term_str()
+        import sympy
+        n = sympy.Symbol('n')
+        self.assertEqual(sympy.simplify(o_seq.expression.subs(n, 1)), 1)
+        self.assertEqual(sympy.simplify(o_seq.expression.subs(n, 2)), 2)
+        self.assertEqual(sympy.simplify(o_seq.expression.subs(n, 3)), 3)
+
     def test_level_difference(self):
         def f(x):
             return x ** 3 + 2 * x + 2
@@ -154,3 +173,11 @@ class SequenceGuesser(unittest.TestCase):
         ith_number = o_seq.get_ith_number(8)
         with self.subTest(msg=f'Testing correct 8th number'):
             self.assertRegex(ith_number, '24')
+
+        # Test closed-form expression matches 1-based sequence
+        o_seq.get_term_str()
+        import sympy
+        n = sympy.Symbol('n')
+        self.assertEqual(sympy.simplify(o_seq.expression.subs(n, 1)), 0)
+        self.assertEqual(sympy.simplify(o_seq.expression.subs(n, 2)), 1)
+        self.assertEqual(sympy.simplify(o_seq.expression.subs(n, 3)), 1)

@@ -23,15 +23,7 @@ class GeneralFibonacciSequence(SequenceType):
 
     @staticmethod
     def nth_fibonacci_term(n):
-        # TODO: Improve efficiency of this function, and more precision
-        sqrt5 = 5 ** 0.5
-        phi = (1 + sqrt5) / 2
-        # c_phi = 1 - phi
-        # return (phi ** n - c_phi ** n) / sqrt5
-        if n > 0:
-            return round(phi ** n / sqrt5)
-        else:
-            raise NotImplementedError('Negative Fibonacci is not implemented yet.')
+        return int(sympy.fibonacci(n))
 
     def term_number(self, index):
         """ The ith number in the sequence. """
@@ -41,8 +33,8 @@ class GeneralFibonacciSequence(SequenceType):
 
     def seq_str(self, n):
         # f = sympy.Function('f')
-        f_n2 = (((1 + sympy.sqrt(5)) / 2) ** (n - 2) + ((1 - sympy.sqrt(5)) / 2) ** (n - 2)) / sympy.sqrt(5)
-        f_n1 = (((1 + sympy.sqrt(5)) / 2) ** (n - 1) + ((1 - sympy.sqrt(5)) / 2) ** (n - 1)) / sympy.sqrt(5)
+        f_n2 = (((1 + sympy.sqrt(5)) / 2) ** (n - 2) - ((1 - sympy.sqrt(5)) / 2) ** (n - 2)) / sympy.sqrt(5)
+        f_n1 = (((1 + sympy.sqrt(5)) / 2) ** (n - 1) - ((1 - sympy.sqrt(5)) / 2) ** (n - 1)) / sympy.sqrt(5)
         expression = self.a * f_n2 + self.b * f_n1
 
         return expression
