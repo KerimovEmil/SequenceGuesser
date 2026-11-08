@@ -23,7 +23,11 @@ class GeneralFibonacciSequence(SequenceType):
 
     @staticmethod
     def nth_fibonacci_term(n):
-        return int(sympy.fibonacci(n))
+        # TODO: Improve efficiency of this function, and more precision
+        sqrt5 = 5 ** 0.5
+        phi = (1 + sqrt5) / 2
+        c_phi = 1 - phi
+        return round((phi ** n - c_phi ** n) / sqrt5)
 
     def term_number(self, index):
         """ The ith number in the sequence. """
